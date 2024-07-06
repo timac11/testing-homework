@@ -1,20 +1,20 @@
 import React from 'react';
 
 import { it, expect } from '@jest/globals';
-import {getByRole, render} from '@testing-library/react';
-import {initStore} from "../../../src/client/store";
-import {CartApi, ExampleApi} from "../../../src/client/api";
-import {Provider} from "react-redux";
-import {Application} from "../../../src/client/Application";
-import {MemoryRouter} from "react-router-dom";
-import {ProductShortInfo} from "../../../src/common/types";
-import {generateProducts} from "../../utils/apiMock";
+import { getByRole, render } from '@testing-library/react';
+import { initStore } from "../../../src/client/store";
+import { CartApi, ExampleApi } from "../../../src/client/api";
+import { Provider } from "react-redux";
+import { Application } from "../../../src/client/Application";
+import { MemoryRouter } from "react-router-dom";
+import { ProductShortInfo } from "../../../src/common/types";
+import { generateProductList } from "../../utils/apiMock";
 
 describe('Тестирование страницы Каталога', () => {
   const basename = '/hw/store'
   const buildApp = () => {
 
-    const products: ProductShortInfo[] = generateProducts(10);
+    const products: ProductShortInfo[] = generateProductList(10);
     const api = new ExampleApi(basename);
 
     api.getProducts = async () => Promise.resolve(
