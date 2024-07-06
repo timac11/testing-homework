@@ -15,7 +15,10 @@ export const Cart: React.FC = () => {
     const cart = useSelector((s: ApplicationState) => s.cart);
     const latestOrderId = useSelector((s: ApplicationState) => s.latestOrderId);
 
+    console.log(cart)
+
     const onClear = useCallback(() => {
+        console.log('clear cart dispatch')
         dispatch(clearCart());
     }, [dispatch]);
 
