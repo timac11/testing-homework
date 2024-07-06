@@ -109,10 +109,9 @@ const productDetailsLoadEpic: ExampleEpic = (action$, store$, { api }) => action
 const shoppingCartEpic: ExampleEpic = (action$, store$, { cart }) => action$.pipe(
     ofType('ADD_TO_CART', 'CLEAR_CART', 'CHECKOUT_COMPLETE'),
     tap(() => {
-        console.log(process.env.BUG_ID);
-        // if (process.env.BUG_ID !== '6') {
-        //     cart.setState(store$.value.cart)
-        // }
+        if (process.env.BUG_ID !== '6') {
+            cart.setState(store$.value.cart)
+        }
     }),
     mergeMapTo(EMPTY),
 );
