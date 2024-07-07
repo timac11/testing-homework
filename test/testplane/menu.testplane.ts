@@ -14,7 +14,9 @@ describe('Тестирование поведения меню', () => {
   });
 
   it('При клике на пункт меню из бургера меню пропадает', async ({ browser }) => {
-    expect(true).toBe(true);
-    // TODO
+    await browser.url(`${BASE_PATH}/`);
+    await browser.setWindowRect(0, 0, 575, 1024);
+
+
   });
 });
