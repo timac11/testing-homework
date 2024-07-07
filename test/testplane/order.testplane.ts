@@ -1,14 +1,14 @@
-import { BASE_PATH } from "../utils/constants";
+import { buildUrl } from "../utils/url";
 
 it("Заказ успешно создается", async ({ browser }) => {
 
-  await browser.url(`${BASE_PATH}/catalog/1`);
+  await browser.url(buildUrl('catalog/1'));
 
   const addCart = await browser.$('.ProductDetails-AddToCart');
   await addCart.waitForDisplayed();
   await addCart.click();
 
-  await browser.url(`${BASE_PATH}/cart`);
+  await browser.url(buildUrl('cart'));
 
   const name = await browser.$('#f-name');
   const phone = await browser.$('#f-phone');

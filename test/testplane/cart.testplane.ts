@@ -1,7 +1,8 @@
 import { BASE_PATH } from "../utils/constants";
+import { buildUrl } from "../utils/url";
 
 it("После перезагрузки корзина сохранилась", async ({ browser }) => {
-  await browser.url(`${BASE_PATH}/catalog/0`);
+  await browser.url(buildUrl('catalog/0'));
 
   const addCart = await browser.$('.ProductDetails-AddToCart')
 
@@ -9,7 +10,7 @@ it("После перезагрузки корзина сохранилась", 
   await addCart.click();
 
   await browser.refresh();
-  await browser.url(`${BASE_PATH}/cart`);
+  await browser.url(buildUrl('cart'));
 
   const count = await browser.$('.Cart-Table .Cart-Count')
   const clearButton = await browser.$('.Cart-Clear')

@@ -1,8 +1,9 @@
 import { BASE_PATH } from "../utils/constants";
+import {buildUrl} from "../utils/url";
 
 describe("Скриншотное тестирование", () => {
   it("Корзина отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/cart`);
+    await browser.url(buildUrl('cart'));
     const page = await browser.$('.Cart');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -10,7 +11,7 @@ describe("Скриншотное тестирование", () => {
   });
 
   it("Каталог отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/catalog`);
+    await browser.url(buildUrl('catalog'));
     const page = await browser.$('.Catalog');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -18,7 +19,7 @@ describe("Скриншотное тестирование", () => {
   });
 
   it("Продукт отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/catalog/0`);
+    await browser.url(buildUrl('catalog/0'));
     const page = await browser.$('.Product');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -26,7 +27,7 @@ describe("Скриншотное тестирование", () => {
   });
 
   it("Доставка отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/delivery`);
+    await browser.url(buildUrl('delivery'));
     const page = await browser.$('.Delivery');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -34,7 +35,7 @@ describe("Скриншотное тестирование", () => {
   });
 
   it("Главная отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/`);
+    await browser.url(buildUrl(''));
     const page = await await browser.$('.Home');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -42,7 +43,7 @@ describe("Скриншотное тестирование", () => {
   });
 
   it("Контакты отображается без изменений", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/contacts`);
+    await browser.url(buildUrl('contacts'));
     const page = await browser.$('.Contacts');
     await page.waitForDisplayed();
     await browser.pause(500);
@@ -52,7 +53,7 @@ describe("Скриншотное тестирование", () => {
 
 describe('Скриншотное тестирование мальньких экранов', () => {
   it("Корзина отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/cart`);
+    await browser.url(buildUrl('cart'));
     await browser.setWindowRect(0, 0, 575, 1024);
     const page = await browser.$('.Cart');
     await page.waitForDisplayed();
@@ -61,7 +62,7 @@ describe('Скриншотное тестирование мальньких э�
   });
 
   it("Каталог отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/catalog`);
+    await browser.url(buildUrl('catalog'));
     await browser.setWindowRect(0, 0, 575, 1024);
     const page = await browser.$('.Catalog');
     await page.waitForDisplayed();
@@ -70,7 +71,7 @@ describe('Скриншотное тестирование мальньких э�
   });
 
   it("Продукт отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/catalog/0`);
+    await browser.url(buildUrl('catalog/0'));
     await browser.setWindowRect(0, 0, 575, 1024);
     const page = await browser.$('.Product');
     await page.waitForDisplayed();
@@ -79,7 +80,7 @@ describe('Скриншотное тестирование мальньких э�
   });
 
   it("Доставка отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/delivery`);
+    await browser.url(buildUrl('delivery'));
     await browser.setWindowRect(0, 0, 575, 1024);
     const page = await browser.$('.Delivery');
     await page.waitForDisplayed();
@@ -88,7 +89,7 @@ describe('Скриншотное тестирование мальньких э�
   });
 
   it("Главная отображается правильно", async ({browser}) => {
-    await browser.url(`${BASE_PATH}/`);
+    await browser.url(buildUrl(''));
     await browser.setWindowRect(0, 0, 575, 1024);
     const page = await await browser.$('.Home');
     await page.waitForDisplayed();
