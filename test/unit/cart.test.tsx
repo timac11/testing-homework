@@ -1,11 +1,10 @@
 import { it, expect } from '@jest/globals';
-import {findByRole, getAllByTestId, queryAllByTestId, render} from '@testing-library/react';
-import { CartApi, ExampleApi } from "../../../src/client/api";
-import { Product, ProductShortInfo } from "../../../src/common/types";
-import {generateProduct, generateProductList, returnResponse} from "../../utils/apiMock";
+import { findByRole, render } from '@testing-library/react';
+import { CartApi, ExampleApi } from "../../src/client/api";
+import { Product, ProductShortInfo } from "../../src/common/types";
+import { generateProduct, generateProductList, returnResponse } from "../utils/apiMock";
 import events from '@testing-library/user-event';
-import {buildApp} from "../../utils/appBuild";
-import exp = require("constants");
+import { buildApp } from "../utils/appBuild";
 
 describe('Тестирование страницы корзины', () => {
   const basename = '/hw/store';
@@ -22,7 +21,7 @@ describe('Тестирование страницы корзины', () => {
 
     const { application, store } = buildApp(api, cart, [`${basename}/catalog/${products[0].id}`], 0);
 
-    const { container, findByText, findAllByTestId, findAllByText, findByRole, findAllByRole } = render(application);
+    const { findByText } = render(application);
 
     const addButton = await findByText('Add to Cart');
     await events.click(addButton);
@@ -123,11 +122,9 @@ describe('Тестирование страницы корзины', () => {
     }};
 
     cart.getState = () => {
-      console.log('getState was called');
-      console.log(state);
       return state;
     };
-    cart.setState = (cart) => { state = {} as any; console.log('was called') };
+    cart.setState = (cart) => { state = {} as any; };
 
     const { application, store } = buildApp(api, cart, [`${basename}/cart`], 0);
 

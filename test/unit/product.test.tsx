@@ -1,58 +1,24 @@
-import React from 'react';
-
 import { it, expect } from '@jest/globals';
 
 import { render } from '@testing-library/react';
-import { initStore } from "../../../src/client/store";
-import { CartApi, ExampleApi } from "../../../src/client/api";
-import { Provider} from "react-redux";
-import { Application} from "../../../src/client/Application";
-import { MemoryRouter } from "react-router-dom";
-import { Product } from "../../../src/common/types";
-import { generateProduct } from "../../utils/apiMock";
+import { CartApi, ExampleApi } from "../../src/client/api";
+import { Product, ProductShortInfo } from "../../src/common/types";
+import { generateProduct, returnResponse} from "../utils/apiMock";
 import events from '@testing-library/user-event';
+import { buildApp } from "../utils/appBuild";
 
 describe('Тестирование страницы Продукта', () => {
-  const basename = '/hw/store'
-  const buildApp = () => {
-    const api = new ExampleApi(basename);
-    const product: Product = generateProduct({ id: 1, price: 100 });
+  const basename = '/hw/store';
+  const cart = new CartApi();
+  const product: Product = generateProduct({ id: 1, price: 100 });
+  const products = [product, generateProduct({ id: 2, price: 200 })];
+  const api = new ExampleApi(basename);
+  api.getProductById = async (id: number) => returnResponse<Product>(generateProduct(products.find(item => item.id === id)))
+  api.getProducts = async () => returnResponse<ProductShortInfo[]>(products)
 
-    api.getProducts = async () => Promise.resolve(
-      {
-        data: [product, generateProduct({ id: 2, price: 200 })],
-        status: 200,
-        headers: {},
-        statusText: 'OK',
-        config: { headers: {} as any }
-      });
-
-    api.getProductById = async () => Promise.resolve({
-      data: product,
-      status: 200,
-      headers: {},
-      statusText: 'OK',
-      config: { headers: {} as any }
-    });
-
-    const cart = new CartApi();
-    const store = initStore(api, cart);
-
-    const application =
-      <MemoryRouter
-        basename={basename}
-        initialEntries={[`${basename}/catalog/${product.id}`]}
-        initialIndex={0}>
-        <Provider store={store}>
-          <Application />
-        </Provider>
-      </MemoryRouter>;
-
-    return {application, store, product };
-  }
 
   it('Отображается продукт, который приходит с сервера', async () => {
-    const { application, product } = buildApp();
+    const { application } = buildApp(api, cart, [`${basename}/catalog/${product.id}`], 0);
     const { container, findByText, findByRole, findAllByRole } = render(application);
 
     // Проверка отображеня имени
@@ -79,10 +45,10 @@ describe('Тестирование страницы Продукта', () => {
   });
 
   it('Отображается, что товар добавлен в корзину', async () => {
-    const { application, product } = buildApp();
-    const { container, findByText, findAllByTestId, findByRole, findAllByRole } = render(application);
+    const { application } = buildApp(api, cart, [`${basename}/catalog/${product.id}`], 0);
+    const { findByText, findAllByTestId } = render(application);
 
-    const button: HTMLButtonElement = await findByText('Add to Cart');
+    const button = await findByText('Add to Cart');
     expect(button).toBeInTheDocument();
     expect(button.textContent).toBe('Add to Cart');
 

@@ -2,54 +2,31 @@ import React from 'react';
 
 import { it, expect } from '@jest/globals';
 import { getByRole, render } from '@testing-library/react';
-import { initStore } from "../../../src/client/store";
-import { CartApi, ExampleApi } from "../../../src/client/api";
+import { initStore } from "../../src/client/store";
+import { CartApi, ExampleApi } from "../../src/client/api";
 import { Provider } from "react-redux";
-import { Application } from "../../../src/client/Application";
+import { Application } from "../../src/client/Application";
 import { MemoryRouter } from "react-router-dom";
-import { ProductShortInfo } from "../../../src/common/types";
-import { generateProductList } from "../../utils/apiMock";
+import { ProductShortInfo } from "../../src/common/types";
+import { generateProductList, returnResponse } from "../utils/apiMock";
+import {buildApp} from "../utils/appBuild";
 
 describe('Тестирование страницы Каталога', () => {
-  const basename = '/hw/store'
-  const buildApp = () => {
+  const basename = '/hw/store';
+  const products: ProductShortInfo[] = generateProductList(10);
+  const api = new ExampleApi(basename);
+  api.getProducts = async () => returnResponse<ProductShortInfo[]>(products)
+  const cart = new CartApi();
 
-    const products: ProductShortInfo[] = generateProductList(10);
-    const api = new ExampleApi(basename);
-
-    api.getProducts = async () => Promise.resolve(
-      {
-        data: products,
-        status: 200,
-        headers: {},
-        statusText: 'OK',
-        config: { headers: {} as any }
-      });
-
-    const cart = new CartApi();
-    const store = initStore(api, cart);
-
-    const application =
-      <MemoryRouter
-        basename={basename}
-        initialEntries={[`${basename}/catalog`]}
-        initialIndex={0}>
-        <Provider store={store}>
-          <Application />
-        </Provider>
-      </MemoryRouter>;
-
-    return {application, store, products };
-  }
 
   it('В каталоге отображается лоадер', async () => {
-    const { application, store } = buildApp();
+    const { application, store } = buildApp(api, cart, [`${basename}/catalog`], 0);
     const { container, findByText } = render(application);
     expect(findByText('LOADING')).toBeDefined();
   });
 
   it('В каталоге отображаются товары, которые приходят с сервера', async () => {
-    const { application, products } = buildApp();
+    const { application, store } = buildApp(api, cart, [`${basename}/catalog`], 0);
     const { container, findAllByTestId, findByText } = render(application);
 
     // фильтрация оберток
